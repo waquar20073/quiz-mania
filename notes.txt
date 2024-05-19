@@ -1,0 +1,67 @@
+Edit(Update) Home Css Files' Paths
+
+A User can belong to several organizations ( as subscriptions )
+Handle Departments within an Organization
+Add Option Images and Question Images Feature
+Allow View Members to be Sorted Accoring to Tests Attempted or Average Score
+Perform Logging
+Add Validations as in the video https://www.youtube.com/watch?v=sfCQUdlOx-I 
+Manage the Error page for Registeration and Login
+	-Register 	:	Check if email already exists
+	-Login		:	Check for incorrect details
+Complete Forgot Password Feature
+Email feature for Registeration and Login
+Allow the organization to set tiem limit for quiz
+Error Pages
+Use Template Similar to Dashboard to provide Calculator
+Add pagination to Tables in Dashboards
+Add a Option to check all existing questions in quiz by the organization
+Create separate Controllers
+Implement Keep me Logged In
+Implement Login using Google, Facebook
+Continous Delivery on Heroku with CodeShip https://www.youtube.com/watch?v=_tiecDrW6yY
+Search every jsp page for hidden word and work on that feature
+CSRF Protect Website
+Maintain sessions and autologouts
+Implement Remember Password
+Add Timer to OTP
+Handle auto upper case or lowercase
+Suport Multiple Answer Questions
+Support Text Answers
+Support floating point negative marks
+support start and end date and time for quizes
+notify users for upcoming tests
+
+Organization Dashboard
+	-View Results
+		-In-Depth Result Analysis for each quiz * (in future versions)
+	-Add A Quiz
+		-Quiz Name
+		-Date Of Quiz
+		-Questions
+		-TimeLimit
+		-Correct Answer marks
+		-Incorrect answer Marks
+		-Add Images * (in future versions)
+	-Manage Quiz
+		-Add A Question
+		-Delete or Modify Question * (in future versions)
+	-View Candidates
+		-Accept Requests
+		-Delete Members
+	-Change Password
+	
+Student Dashboard
+	-Update Password
+	-View Previous Results
+	
+	
+
+
+Development Notes
+	24/03/2019 - I have updated and renamed the contacts table as messages; 
+	25/03/2019 - Put Button Inside Anchor on Homepage
+
+
+
+

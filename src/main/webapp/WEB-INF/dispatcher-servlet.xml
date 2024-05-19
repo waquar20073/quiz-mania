@@ -1,0 +1,115 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<bean id="myDataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost:3306/quiz_mania" />
+		<property name="user" value="root" />
+		<property name="password" value="6541" />
+
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxIdleTime" value="30000" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="packagesToScan"
+			value="tk.quizmaniac.quizmaker.entity" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="myTransactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="quizmaniac.ws" />
+		<property name="password" value="qwemnb@123" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailMail"
+		class="tk.quizmaniac.quizmaker.services.MailServiceImpl">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+
+	<context:component-scan
+		base-package="tk.quizmaniac.quizmaker.controller" />
+	<context:component-scan
+		base-package="tk.quizmaniac.quizmaker.dao" />
+	<context:component-scan
+		base-package="tk.quizmaniac.quizmaker.services" />
+		<context:component-scan
+		base-package="tk.quizmaniac.quizmaker.repository" />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<tx:annotation-driven
+		transaction-manager="myTransactionManager" />
+	<mvc:annotation-driven />
+	<mvc:resources location="/assets/"
+		mapping="/resources/**" />
+
+	
+	<bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	<security:http auto-config="true" use-expressions="false">
+		<security:form-login login-page="/login"
+			login-processing-url="/loginnow" username-parameter="email"
+			password-parameter="password" 
+			authentication-failure-url="/loginnow?error=true" />
+		<security:logout logout-url="/logout" logout-success-url="/home?logout=true" />
+		<!-- 
+		<security:intercept-url
+			pattern="/organization_dashboard" access="ROLE_ORGANIZATION" />
+		<security:intercept-url
+			pattern="/student_dashboard/" access="ROLE_STUDENT" />
+		 -->
+		
+		<security:intercept-url pattern="/**"
+			access="ROLE_ANONYMOUS" />
+
+	</security:http>
+
+
+	<security:authentication-manager>
+		<!-- <security:http-basic /> -->
+		<security:authentication-provider user-service-ref="UserDetailsServiceImpl"/>
+	</security:authentication-manager>
+</beans>
+
